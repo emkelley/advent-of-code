@@ -16,10 +16,10 @@ console.log(counter);
 
 // * Part 2
 const count = input.reduce((acc, curr, i, src) => {
-  const previousSum = src[i - 1] + src[i] + src[i + 1];
-  const currentSum = src[i] + src[i + 1] + src[i + 2];
+  const prevSum = src[i - 1] + src[i] + src[i + 1];
+  const curSum = src[i] + src[i + 1] + src[i + 2];
   if (i === 0) return 0;
-  if (currentSum > previousSum) return acc + 1;
+  if (curSum > prevSum) return acc + 1;
   return acc;
 }, 0);
 console.log(count);
