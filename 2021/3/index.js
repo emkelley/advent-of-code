@@ -1,27 +1,30 @@
 // ! https://adventofcode.com/2021/day/3
 
 const fs = require("fs");
-const input = fs
+const diagnosticReport = fs
   .readFileSync("./input.txt", { encoding: "utf-8" })
-  .split("\r\n");
+  .split(/\r?\n/);
 
-const getCharsByPos = (index) => input.map((s) => s[index]);
+// Helper functions
+const getMostCommonValue = (array) =>
+  array.sort(
+    (a, b) =>
+      array.filter((v) => v === a).length - array.filter((v) => v === b).length
+  )[0];
 
-let gammaRates = [];
-let epsilonRates = [];
-const queryStringLength = input[0].length;
+// Part 1
+const gammaRates = [];
 
-for (let i = 0; i < queryStringLength; i++) {
-  const chars = getCharsByPos(i);
-  let counts = {};
-  chars.forEach((x) => (counts[x] = (counts[x] || 0) + 1));
-  const mostCommon = counts["0"] > counts["1"] ? 0 : 1;
-  gammaRates.push(mostCommon);
-  epsilonRates.push(mostCommon === 1 ? 0 : 1);
+for (let i = 0; i < diagnosticReport[0].length; i++) {
+  const gamma = [];
+  diagnosticReport.forEach((line) => gamma.push(line.charAt(i)));
+  gammaRates.push(getMostCommonValue(gamma));
 }
 
-const finalGamma = parseInt(gammaRates.join(""), 2);
-const finalEpsilon = parseInt(epsilonRates.join(""), 2);
-const powerConsumption = finalGamma * finalEpsilon;
+const gamma = parseInt(gammaRates.join(""));
+const epsilon = parseInt(gammaRates.map((x) => (x == 1 ? 0 : 1)).join(""));
+const power = gamma * epsilon;
 
-console.log(powerConsumption);
+console.log(`Part 1: ${power}`);
+
+// Part 2
